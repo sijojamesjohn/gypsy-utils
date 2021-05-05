@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+{% load i18n static %}
+<document filename="{{ filename }}">
+<template pageSize="(21.5cm, 28cm)" leftMargin="2.3cm" rightMargin="2.0cm" topMargin="2.3cm" bottomMargin="2.0cm" title="{% trans "Remittance" %}" author="{{ shopDetails.store_name }}" allowSplitting="20">
+    <pageTemplate id="first">
+        <pageGraphics>
+
+            <image x="8mm" y="265mm" width="32.675mm" height="12.875mm" file="{% static 'images/logo.png' %}" />
+
+            <setFont name="Helvetica" size="14"/>
+            <fill color="(0,0,0)"/>
+
+
+        </pageGraphics>
+        <frame id="header" x1="1.0cm" y1="16.3cm" width="8.5cm" height="7cm" />
+        <frame id="body" x1="11.0cm" y1="20.3cm" width="8.5cm" height="15.4cm"/>
+
+        <frame id="footer" x1="1.0cm" y1="2cm" width="19cm" height="5.5cm"/>
+    </pageTemplate>
+    <pageTemplate id="others">
+        <pageGraphics>
+            <image x="5mm" y="240mm" width="32.675mm" height="12.875mm" file="{% static 'images/logo.png' %}"/>
+
+            <setFont name="Helvetica" size="8"/>
+            <fill color="(0,0,0)"/>
+            <setFont name="Helvetica" size="18"/>
+            
+        </pageGraphics>
+
+        <frame id="header" x1="1.0cm" y1="16.3cm" width="8.5cm" height="7cm" />
+        <frame id="body" x1="11.0cm" y1="20.3cm" width="8.5cm" height="15.4cm"/>
+
+        <frame id="footer" x1="1.0cm" y1="2cm" width="19cm" height="5.5cm"/>
+    </pageTemplate>
+</template>
+<stylesheet>
+        <blockTableStyle id="plain">
+            <blockAlignment value="left"/>
+            <blockFont name="Helvetica"/>
+            <lineStyle kind="GRID" colorName="black"/>
+            <lineStyle kind="OUTLINE" colorName="black" thickness="2"/>
+            <blockBottomPadding length="0"/>
+            <blockTopPadding length="0"/>
+            <blockLeftPadding length="0"/>
+            <blockRightPadding length="0"/>
+        </blockTableStyle>
+
+         <blockTableStyle id="realplain">
+            <blockAlignment value="left"/>
+            <blockFont name="Helvetica"/>
+            <blockBottomPadding length="0"/>
+            <blockTopPadding length="0"/>
+            <blockLeftPadding length="0"/>
+            <blockRightPadding length="0"/>
+        </blockTableStyle>
+
+    <paraStyle name="small" fontName="Helvetica" fontSize="8" alignment="justify"/>
+    <paraStyle name="bold" fontName="Helvetica-Bold" fontSize="12"/>
+    <paraStyle name="big" fontName="Helvetica" fontSize="14"/>
+
+</stylesheet>
+<story>
+
+
+    <nextFrame/>
+
+
+
+
+    <spacer length="0.5cm" width="1mm"/>
+    <blockTable colWidths="7cm, 3.0cm, 3.0cm, 3.0cm, 3.0cm" style="products">
+    <tr>
+        <td>{% trans "Description" %}</td>
+        <td>{% trans "Quantity" %}</td>
+        <td>{% trans "Unit Price" %}</td>
+	<td>{% trans "Discount" %}</td>
+        <td>{% trans "Total" %}</td>
+    </tr>
+    {% for item in order.orderitem_set.all %}
+    <tr>
+        <td><para>{{ item.product.name|fix_ampersands }}</para></td>
+        <td>{{ item.quantity|normalize_decimal }} </td>
+        <td>{{ item.unit_price|currency|normalize_decimal }}</td>
+	<td>{{ item.discount|currency|normalize_decimal }}</td>
+        <td>{{ item.sub_total|currency|normalize_decimal }} </td>
+    </tr>
+    {% endfor %}
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    </blockTable>
+    <nextFrame/>
+
+    <blockTable colWidths="7cm,12.0cm" style="realplain">
+        <tr>
+            <td>{% trans "Light Locations" %}</td>
+            <td></td>
+        </tr>
+    </blockTable>
+</story>
+</document>
